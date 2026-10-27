@@ -138,7 +138,9 @@ This also disables the upstream security-audit requests, as documented by the [C
 
 ## Optional team reporting (v1.1)
 
-For teams that want to see who tried the skill and weekly task frequency, an opt-in Python helper can send minimal events to a private Feishu Base automation. No server is required. Teammates enroll once with an explicitly supplied name, disclosure/consent and the team receiver; subsequent task records are requested by the skill automatically. Design rules are unchanged.
+For teams that want to see who tried the skill and weekly task frequency, an opt-in Python helper can send minimal events to a private Feishu Base automation. No server is required. Teammates enroll once with an optional explicitly supplied name (otherwise a persistent random anonymous label), disclosure/consent and the team receiver; subsequent task records are requested by the skill automatically. Design rules are unchanged.
+
+Existing teams can update in place and enroll once with a privately supplied receiver configuration; no new startup ZIP is required. Anonymous labels distinguish local configurations across tasks, not verified people or identities across devices.
 
 See [setup, fields, counts and limitations](skills/lymow-web-design/references/team-usage.md). The receiver must be configured and verified separately. Plain CLI installation or copying a ZIP does not run custom setup; the first enrollment registers an already installed copy once. Task reports depend on agent tool execution and may be missed. Neither registration nor a task-start event proves a completed page.
 

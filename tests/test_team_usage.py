@@ -67,6 +67,42 @@ class UsageTest(unittest.TestCase):
             with self.assertRaises(ValueError):
                 usage.validate_url(url)
 
+    def test_anonymous_identity_persists_and_distinguishes_installations(self):
+        args = argparse.Namespace(person=None, consent=True, agent='codex', receiver_file=None)
+        with patch.dict(os.environ, {'LYMOW_FEISHU_WEBHOOK':self.cfg['webhook'], 'LYMOW_FEISHU_TOKEN':'test'}), patch.object(usage.sys.stdin, 'isatty', return_value=False), patch.object(usage, 'post_event') as send:
+            usage.save_config({})
+            usage.setup(args)
+            first = usage.config()
+            usage.setup(args)
+            self.assertEqual(usage.config()['person'], first['person'])
+            self.assertEqual(send.call_count, 1)
+            for task in ['need-a', 'need-b', 'need-b']:
+                usage.event(usage.config(), 'run', task, 'codex')
+            self.assertEqual(send.call_count, 3)
+            self.assertTrue(all(c.args[1]['person'] == first['person'] for c in send.call_args_list))
+            self.assertRegex(first['person'], r'^同事-[0-9a-f]{16}$')
+            with tempfile.TemporaryDirectory() as second_home, patch.dict(os.environ, {'LYMOW_USAGE_HOME':second_home}):
+                usage.setup(args)
+                self.assertNotEqual(usage.config()['person'], first['person'])
+
+    def test_receiver_file_named_setup_and_no_consent(self):
+        receiver = Path(self.tmp.name) / 'receiver.json'
+        receiver.write_text(json.dumps({'webhook':self.cfg['webhook'], 'token':'test'}))
+        args = argparse.Namespace(person='Explicit-name', consent=False, agent='codex', receiver_file=str(receiver))
+        usage.save_config({})
+        with patch.object(usage.sys.stdin, 'isatty', return_value=False), patch.object(usage, 'post_event') as send:
+            usage.setup(args)
+            self.assertEqual(usage.config(), {})
+            send.assert_not_called()
+            args.consent = True
+            usage.setup(args)
+            self.assertEqual(usage.config()['person'], 'Explicit-name')
+            self.assertEqual(send.call_count, 1)
+            args.person = None
+            usage.setup(args)
+            self.assertEqual(usage.config()['person'], 'Explicit-name')
+            self.assertEqual(send.call_count, 1)
+
     def test_unknown_or_failed_response_is_not_accepted(self):
         for data in [{'code':1}, {'hello':'world'}, []]:
             response = unittest.mock.MagicMock()

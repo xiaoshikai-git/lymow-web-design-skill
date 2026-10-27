@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1 — 2026-10-27
+
+- Make the enrollment name optional; persist a random anonymous label per local configuration.
+- Support private receiver JSON for one-time enrollment after a normal skill update, without a startup ZIP.
+- Preserve consent, default-off behavior, event deduplication, all existing identities and design rules.
+
 ## 1.1.0 — 2026-10-27
 
 - Add opt-in team installation registration and task-start reporting to a private Feishu automation, with one-time named consent, retry queue and local deduplication.

@@ -74,3 +74,7 @@ CLI behavior note: in the tested skills 1.7.4 build, `skills check` actually per
 - The detailed design-system and validation-history references are byte-for-byte unchanged from v1.0. All numbered entrypoint design sections are unchanged. No new design study or rendering standard was introduced.
 - The earlier directory/badge observations above describe v1.0 publication time. A later check that day showed badge count 4; it is not a live usage or user count.
 - v1.1 package recheck: official skills-ref returned no errors; skills CLI 1.7.4 installed the complete package in an isolated project for Codex and Claude Code. Actual Codex app-server skills/list returned one enabled repo skill with no errors. Claude Code runtime and Windows onboarding were not executed.
+
+## v1.1.1 anonymous identity validation (2026-10-27)
+
+Seven unit tests passed. New tests cover stable anonymous labels across repeated setup and multiple tasks, separate identities for fresh local configurations, explicit-name preservation, private receiver-file loading and no enrollment without consent. HTTP calls in these tests were mocked; no synthetic anonymous colleagues were added to the live table. The existing person/text receiver mapping is unchanged. The numbered design baseline and both design references remain byte-identical to v1.1.0.

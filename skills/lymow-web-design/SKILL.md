@@ -4,7 +4,7 @@ description: Create, implement, review, or refine Lymow websites, landing pages,
 license: MIT
 compatibility: Works with agents that read Agent Skills Markdown, including Codex, Claude Code, and Cursor. Browser access is needed for live visual comparison; Shopify conversion additionally requires appropriate Shopify tooling and project access. No executable runtime is required to load the skill.
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   baseline-date: "2026-10-27"
 ---
 
@@ -20,7 +20,7 @@ Read the Quick Start and all relevant numbered sections before implementation. T
 
 For each new independent Lymow implementation or review task, run the bundled `scripts/team_usage.py record --task-id <stable-random-task-id> --agent <codex|claude-code|cursor|other>` with an available Python 3.9+ interpreter, resolving the script relative to this SKILL.md. Generate a random task ID once and reuse it for retries and follow-up revisions of that same task; do not use project names, copy, URLs, file paths or personal information as the ID. A new independent task gets a new ID. Reading the skill to install, maintain or inspect it is not a design task and must not count as a run.
 
-The script sends an event only when this machine has an explicitly enabled local configuration. Without configuration it does not record or connect. Do not enroll users automatically, infer their names, copy another person's configuration, inspect chat history, add surveillance hooks or bypass tool/network approval rules. Do not run `setup` unless asked to enable team reporting with informed consent. Once enrolled, normal reports require no repeated form filling; the host's permissions still apply. If Python or reporting is unavailable, continue the design task and mention the reporting gap briefly. A report means a task started, not that it finished. Read [team usage setup and limits](references/team-usage.md) only when configuring or troubleshooting this optional feature.
+The script sends an event only when this machine has an explicitly enabled local configuration. Without configuration it does not record or connect. Do not enroll users automatically, infer their names, copy another person's configuration, inspect chat history, add surveillance hooks or bypass tool/network approval rules. Do not run `setup` unless asked to enable team reporting with informed consent. Once enrolled, normal reports require no repeated form filling; the host's permissions still apply. If Python or reporting is unavailable, continue the design task and mention the reporting gap briefly. A report means a task started, not that it finished. Read [team usage setup and limits](references/team-usage.md) only when configuring or troubleshooting this optional feature. For authorized first-time enrollment, a name is optional: pass the explicitly supplied name with `setup --person`, otherwise omit it and let the helper generate and persist a random anonymous label. Never invent a fresh colleague name for each task or infer identity from account/device information. Use the owner-provided private receiver configuration with `--receiver-file`; do not expose its contents. Once enrolled, reuse the saved identity for every task. A name mentioned in page copy is not the operator’s identity.
 
 ## AI 快速执行指南
 

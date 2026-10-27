@@ -17,7 +17,7 @@ import urllib.request
 import uuid
 
 SKILL = "lymow-web-design"
-NOTICE = ("启用后向负责人指定的飞书多维表格发送：你填写的姓名/代号、安装或使用事件、"
+NOTICE = ("启用后向负责人指定的飞书多维表格发送：你填写的姓名/代号（留空则生成固定匿名编号）、安装或使用事件、"
           "时间、周、Agent 和 Skill 版本。不发送聊天、文案、素材、文件路径或设备信息。"
           "首次登记安装计一次；每个独立任务计一次使用，不代表任务完成。"
           "失败记录留在本机，下次调用时补发；可随时用 disable 停止。")
@@ -134,20 +134,29 @@ def setup(args):
         if not sys.stdin.isatty() or input("已阅读并同意？输入 YES：").strip() != "YES":
             print("未启用，不发送任何记录。")
             return
-    person = (args.person or input("你的姓名或负责人约定的唯一代号：")).strip()
-    if not person or len(person) > 80:
-        raise ValueError("姓名/代号必须是 1–80 个字符")
-    webhook = os.environ.get("LYMOW_FEISHU_WEBHOOK") or getpass.getpass("飞书自动化 Webhook（输入不显示）：")
-    token = os.environ.get("LYMOW_FEISHU_TOKEN")
+    registration_id = old.get("registration_id") or str(uuid.uuid4())
+    person = args.person
+    if person is None and not old and sys.stdin.isatty():
+        person = input("姓名或唯一代号（可留空，自动分配固定匿名编号）：")
+    person = (person or '').strip() or old.get('person') or (
+        '同事-' + hashlib.sha256(registration_id.encode()).hexdigest()[:16])
+    if len(person) > 80:
+        raise ValueError("姓名/代号不能超过80个字符")
+    receiver = {}
+    if args.receiver_file:
+        receiver = json.loads(Path(args.receiver_file).expanduser().read_text(encoding='utf-8'))
+    webhook = os.environ.get("LYMOW_FEISHU_WEBHOOK") or receiver.get('webhook') or old.get('webhook') or getpass.getpass("飞书自动化 Webhook（输入不显示）：")
+    token = os.environ.get("LYMOW_FEISHU_TOKEN", receiver.get('token', old.get('token')))
     if token is None:
         token = getpass.getpass("Bearer 凭证（未启用凭证校验则留空）：")
     validate_url(webhook)
     if old and (old.get("person") != person or old.get("webhook") != webhook):
         raise ValueError("该本机统计配置已绑定其他姓名或目标；请使用独立 LYMOW_USAGE_HOME，避免混传旧事件。")
     cfg = {"enabled": True, "person": person, "webhook": webhook, "token": token,
-           "registration_id": old.get("registration_id", str(uuid.uuid4())),
+           "registration_id": registration_id,
            "consent_at": dt.datetime.now(dt.timezone.utc).isoformat()}
     save_config(cfg)
+    print('统计身份：' + person)
     event(cfg, "install", "first-enrollment", args.agent)
 
 
@@ -156,6 +165,7 @@ def main():
     subs = parser.add_subparsers(dest="command", required=True)
     s = subs.add_parser("setup", help="一次性告知、配置身份与目标，并登记已安装的 Skill")
     s.add_argument("--person")
+    s.add_argument("--receiver-file", help="负责人私下提供的接收配置JSON；不输出其内容")
     s.add_argument("--consent", action="store_true", help="仅在已取得当事人知情同意后使用")
     s.add_argument("--agent", choices=["codex", "claude-code", "cursor", "other"], default="codex")
     r = subs.add_parser("record", help="由 AI 在新任务开始时调用一次")
