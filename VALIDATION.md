@@ -23,6 +23,7 @@ Validation date: 2026-10-27. Installation, agent execution and directory indexin
 | Claude Code runtime | Not tested: executable unavailable; CLI installation and file layout only |
 | Cursor runtime | Not tested; CLI installation and shared skill path only |
 | Public GitHub installation | Passed: remote `--list` found one skill; clean install downloaded it for all three target agents; Codex `skills/list` recognized that remote installation |
+| Update workflow | Remote installation updated successfully and all three installed skill files matched the release source byte-for-byte |
 | Codex-generated demo | Passed: a real `codex exec` run read the installed entrypoint and required design reference, produced a new text-only HTML demo; independently rendered at 1440/768/390 |
 | skills.sh indexing | Detail page resolves and displays the actual skill and install command; Installs is still “–”. Official source badge currently returns an SVG saying `resource not found`. Counts are not yet available |
 
@@ -61,3 +62,5 @@ All three fonts loaded at each viewport; no horizontal overflow or browser page/
 Verified detail page: https://skills.sh/xiaoshikai-git/lymow-web-design-skill/lymow-web-design
 
 The page returned HTTP 200 with the actual skill name, content and installation command. Its install count was unavailable (“–”); an HTTP 200 badge response still contained `resource not found`, so HTTP status alone was not treated as a working count. This is a dated observation, not a claim of any installation total or rank. The README uses the officially documented badge endpoint and links to the public source page. No separate registration, synthetic installation traffic or custom analytics was added.
+
+CLI behavior note: in the tested skills 1.7.4 build, `skills check` actually performed an available update, despite current upstream documentation describing it as a check. `skills update lymow-web-design -y` subsequently reported up to date. Use a clean project and review changes when running either command; the README uses the unambiguous update command. GitHub Traffic views and clones endpoints were also accessible to the maintainer; no counts are presented here as usage evidence.

@@ -107,7 +107,6 @@ See [VALIDATION.md](VALIDATION.md) for tested versions, actual installation resu
 ## Updates and contributions
 
 ```sh
-npx skills check
 npx skills update
 ```
 
@@ -139,7 +138,7 @@ This also disables the upstream security-audit requests, as documented by the [C
 
 ## License
 
-[MIT, with explicit scope](LICENSE), for the maintainers' original documentation, instructions and independently authored examples. This grants no rights to Lymow's name, logo, images, videos, fonts, website code or other third-party assets. Public source links and measured properties are evidence, not asset licenses. No third-party media or source archives are redistributed here.
+[MIT](LICENSE), for the maintainers' original documentation, instructions and independently authored examples; see the [third-party scope notice](THIRD_PARTY_NOTICES.md). This grants no rights to Lymow's name, logo, images, videos, fonts, website code or other third-party assets. Public source links and measured properties are evidence, not asset licenses. No third-party media or source archives are redistributed here.
 
 ## 中文说明
 
