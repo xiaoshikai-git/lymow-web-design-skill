@@ -1,0 +1,25 @@
+# Local agent installations, credentials and private verification work
+.agents/
+.claude/
+.cursor/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.DS_Store
+node_modules/
+work/
+outputs/
+private/
+verification/
+*.zip
+*.log
+# Third-party media is not distributed in this documentation-only repository
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.mp4
+*.woff
+*.woff2
