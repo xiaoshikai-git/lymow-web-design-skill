@@ -8,8 +8,8 @@ Validation date: 2026-10-27. Installation, agent execution and directory indexin
 - Source SHA-256: `9c94671a7e5bc61d8d18f33d65df934c7d9e0b72bfdbc03e7fec33db30768318`.
 - Original body SHA-256: `3d83e9584d0754b827d8220488092954d9334aba73717dec9c673f31e2ca10e5`.
 - Exact reconstruction from the entrypoint and two references preserves all 13 original sections, including numbers, CSS examples, evidence labels, exceptions and validation history. Whitespace at split-file boundaries was normalized. Two packaging-location sentences now point to the bundled references; public-distribution notes and discovery metadata were added. No design values changed.
-- The entrypoint is 139 lines. Detailed design rules are required reading. The baseline remains in Chinese to avoid translation drift.
-- Documentation-only publication: no local absolute paths, credentials, private customer data, media binaries, screenshots, raw website archives or installation logs are committed. Linked third-party resources are not bundled or relicensed.
+- The v1.0 entrypoint was 139 lines. Detailed design rules are required reading. The baseline remains in Chinese to avoid translation drift.
+- The v1.0 documentation-only publication: no local absolute paths, credentials, private customer data, media binaries, screenshots, raw website archives or installation logs are committed. Linked third-party resources are not bundled or relicensed.
 - Original-content and third-party license boundaries are stated in the skill and LICENSE.
 
 ## Validation results
@@ -64,3 +64,13 @@ Verified detail page: https://skills.sh/xiaoshikai-git/lymow-web-design-skill/ly
 The page returned HTTP 200 with the actual skill name, content and installation command. Its install count was unavailable (“–”); an HTTP 200 badge response still contained `resource not found`, so HTTP status alone was not treated as a working count. This is a dated observation, not a claim of any installation total or rank. The README uses the officially documented badge endpoint and links to the public source page. No separate registration, synthetic installation traffic or custom analytics was added.
 
 CLI behavior note: in the tested skills 1.7.4 build, `skills check` actually performed an available update, despite current upstream documentation describing it as a check. `skills update lymow-web-design -y` subsequently reported up to date. Use a clean project and review changes when running either command; the README uses the unambiguous update command. GitHub Traffic views and clones endpoints were also accessible to the maintainer; no counts are presented here as usage evidence.
+
+## v1.1 opt-in reporting validation (2026-10-27)
+
+- Python 3.9.6: five unit tests passed, covering consent/default-off behavior, event deduplication, field allowlist, retry stability, URL restrictions and response validation.
+- A private Feishu Base was configured with nine fields and a week → person → event grouped view. Bearer verification is enabled. No receiver credentials or user data are included in this repository.
+- End-to-end test identity `TEST-联调`: one installation registration, two different task-start events, and a repeated invocation of the first task. The actual table and grouped view showed exactly **1 install + 2 run**. These are integration test records, not colleague usage.
+- The minimal receiver appends records. Local repeats are deduplicated; ambiguous network retries can still duplicate remote rows. Task-start reporting depends on the agent following instructions and having Python/network access.
+- The detailed design-system and validation-history references are byte-for-byte unchanged from v1.0. All numbered entrypoint design sections are unchanged. No new design study or rendering standard was introduced.
+- The earlier directory/badge observations above describe v1.0 publication time. A later check that day showed badge count 4; it is not a live usage or user count.
+- v1.1 package recheck: official skills-ref returned no errors; skills CLI 1.7.4 installed the complete package in an isolated project for Codex and Claude Code. Actual Codex app-server skills/list returned one enabled repo skill with no errors. Claude Code runtime and Windows onboarding were not executed.

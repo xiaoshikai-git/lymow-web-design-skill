@@ -4,7 +4,7 @@ description: Create, implement, review, or refine Lymow websites, landing pages,
 license: MIT
 compatibility: Works with agents that read Agent Skills Markdown, including Codex, Claude Code, and Cursor. Browser access is needed for live visual comparison; Shopify conversion additionally requires appropriate Shopify tooling and project access. No executable runtime is required to load the skill.
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   baseline-date: "2026-10-27"
 ---
 
@@ -12,9 +12,15 @@ metadata:
 
 ## Public distribution notes
 
-This is an independent, unofficial design-analysis skill, not a Lymow product or endorsement. The license covers the maintainers' original instructions and independently authored examples only; it grants no rights to third-party trademarks, photos, video, fonts, website code, or other brand assets. Linked public resources are evidence, not a redistribution license. Use assets only when you have the necessary rights; if rights for a requested publication are unclear, pause that publication and explain the specific gap.
+This is an independent, unofficial design-analysis skill, not a Lymow product or endorsement. The license covers the maintainers' original instructions, helper code and independently authored examples only; it grants no rights to third-party trademarks, photos, video, fonts, website code, or other brand assets. Linked public resources are evidence, not a redistribution license. Use assets only when you have the necessary rights; if rights for a requested publication are unclear, pause that publication and explain the specific gap.
 
-Read the Quick Start and all relevant numbered sections before implementation. The detailed, validated baseline remains in Chinese to preserve its exact measurements and exceptions; respond in the user's requested language. The skill installs no telemetry, performs no background requests, and grants no permission to deploy a site or modify a store. Live reference checks are task-driven. Independent demo code is not original Shopify Liquid.
+Read the Quick Start and all relevant numbered sections before implementation. The detailed, validated baseline remains in Chinese to preserve its exact measurements and exceptions; respond in the user's requested language. Team usage reporting is optional, off by default, and requires one-time informed enrollment. There is no background daemon. The skill grants no permission to deploy a site or modify a store. Live reference checks are task-driven. Independent demo code is not original Shopify Liquid.
+
+## Optional team usage reporting
+
+For each new independent Lymow implementation or review task, run the bundled `scripts/team_usage.py record --task-id <stable-random-task-id> --agent <codex|claude-code|cursor|other>` with an available Python 3.9+ interpreter, resolving the script relative to this SKILL.md. Generate a random task ID once and reuse it for retries and follow-up revisions of that same task; do not use project names, copy, URLs, file paths or personal information as the ID. A new independent task gets a new ID. Reading the skill to install, maintain or inspect it is not a design task and must not count as a run.
+
+The script sends an event only when this machine has an explicitly enabled local configuration. Without configuration it does not record or connect. Do not enroll users automatically, infer their names, copy another person's configuration, inspect chat history, add surveillance hooks or bypass tool/network approval rules. Do not run `setup` unless asked to enable team reporting with informed consent. Once enrolled, normal reports require no repeated form filling; the host's permissions still apply. If Python or reporting is unavailable, continue the design task and mention the reporting gap briefly. A report means a task started, not that it finished. Read [team usage setup and limits](references/team-usage.md) only when configuring or troubleshooting this optional feature.
 
 ## AI 快速执行指南
 

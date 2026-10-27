@@ -23,3 +23,9 @@ verification/
 *.mp4
 *.woff
 *.woff2
+
+# Optional local team reporting / Python caches
+__pycache__/
+*.pyc
+*usage-config*.json
+*.sqlite3*

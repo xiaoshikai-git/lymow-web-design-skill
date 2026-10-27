@@ -16,7 +16,7 @@ The validated design baseline is dated **2026-10-27**. Detailed rules are in Chi
 - Review screenshots at 1440px and 390px, with a 768px adaptation check.
 - Guide reuse of existing Shopify components when source code is available. It is not a Shopify theme or a working checkout.
 
-The entrypoint is [`skills/lymow-web-design/SKILL.md`](skills/lymow-web-design/SKILL.md); it explicitly requires the bundled [complete design reference](skills/lymow-web-design/references/design-system.md) before implementation. Prior validation evidence is preserved in a separate reference. No image library, website source archive, runtime package or hidden tracking code is bundled.
+The entrypoint is [`skills/lymow-web-design/SKILL.md`](skills/lymow-web-design/SKILL.md); it explicitly requires the bundled [complete design reference](skills/lymow-web-design/references/design-system.md) before implementation. Prior validation evidence is preserved in a separate reference. No image library or website source archive is bundled. Optional, disclosed team reporting uses a standard-library Python script and remains disabled until enrollment.
 
 ## Installation
 
@@ -122,13 +122,13 @@ Report reproducible issues with a public page/module reference, viewport, observ
 | Views / unique visitors | [Insights → Traffic](https://github.com/xiaoshikai-git/lymow-web-design-skill/graphs/traffic) | GitHub repository traffic, visible to users with push access |
 | Clones / unique cloners | Same Traffic page | Git clones, including automation; not skill executions |
 | CLI installations | Official skills.sh badge and [source page](https://skills.sh/xiaoshikai-git/lymow-web-design-skill) | Aggregate recorded CLI installations; not unique people |
-| Actual AI executions | Not collected | This skill does not instrument agent execution |
+| Team-reported task starts | Your private Feishu table, after opt-in enrollment | Approximate install registrations and independent task starts by supplied name; not guaranteed execution auditing |
 
 GitHub Traffic shows a rolling **14-day** window for visitors and full clones; it is not a lifetime installation counter. See [GitHub's traffic documentation](https://docs.github.com/en/repositories/viewing-activity-and-data-for-your-repository/viewing-traffic-to-a-repository).
 
-[skills.sh automatically indexes skills through CLI installation telemetry](https://skills.sh/docs/faq); no separate submission is required. Indexing can lag installation. A successful CLI install does not by itself prove a listing exists. See [VALIDATION.md](VALIDATION.md) for the last observed status, not a claimed rank or fabricated count. The [skill detail page](https://skills.sh/xiaoshikai-git/lymow-web-design-skill/lymow-web-design) has been verified. At publication, its install count is “–” and the badge says `resource not found`; public installation works, but count availability has not yet been confirmed.
+[skills.sh automatically indexes skills through CLI installation telemetry](https://skills.sh/docs/faq); no separate submission is required. Indexing can lag installation. A successful CLI install does not by itself prove a listing exists. See [VALIDATION.md](VALIDATION.md) for the last observed status, not a claimed rank or fabricated count. The [skill detail page](https://skills.sh/xiaoshikai-git/lymow-web-design-skill/lymow-web-design) has been verified. The badge displayed 4 during a later check on 2026-10-27; this is a dated observation, not a live count or a claim of four unique users.
 
-The [official badge](https://skills.sh/docs) reports the source repository's installation count; this repository contains one skill. Installs with telemetry disabled will not contribute. Maintainer test installs may be included, and repeated installs are not unique users. This repository adds no analytics backend, execution hooks or custom telemetry. README badges use their stated public services. The upstream CLI has its own telemetry/security-check behavior; to opt out:
+The [official badge](https://skills.sh/docs) reports the source repository's installation count; this repository contains one skill. Installs with telemetry disabled will not contribute. Maintainer test installs may be included, and repeated installs are not unique users. Default installations do not report named usage. Optional team reporting is described below; it is not an agent hook or background monitor. README badges use their stated public services. The upstream CLI has its own telemetry/security-check behavior; to opt out:
 
 ```sh
 DISABLE_TELEMETRY=1 npx skills add xiaoshikai-git/lymow-web-design-skill
@@ -136,9 +136,17 @@ DISABLE_TELEMETRY=1 npx skills add xiaoshikai-git/lymow-web-design-skill
 
 This also disables the upstream security-audit requests, as documented by the [CLI maintainers](https://github.com/vercel-labs/skills/blob/main/docs/troubleshooting.md#telemetry).
 
+## Optional team reporting (v1.1)
+
+For teams that want to see who tried the skill and weekly task frequency, an opt-in Python helper can send minimal events to a private Feishu Base automation. No server is required. Teammates enroll once with an explicitly supplied name, disclosure/consent and the team receiver; subsequent task records are requested by the skill automatically. Design rules are unchanged.
+
+See [setup, fields, counts and limitations](skills/lymow-web-design/references/team-usage.md). The receiver must be configured and verified separately. Plain CLI installation or copying a ZIP does not run custom setup; the first enrollment registers an already installed copy once. Task reports depend on agent tool execution and may be missed. Neither registration nor a task-start event proves a completed page.
+
+Do not put team Webhook URLs, tokens, identities or event logs in this public repository. The upstream CLI telemetry opt-out above is separate from team reporting; use the bundled helper's `disable` command to stop team reports.
+
 ## License
 
-[MIT](LICENSE), for the maintainers' original documentation, instructions and independently authored examples; see the [third-party scope notice](THIRD_PARTY_NOTICES.md). This grants no rights to Lymow's name, logo, images, videos, fonts, website code or other third-party assets. Public source links and measured properties are evidence, not asset licenses. No third-party media or source archives are redistributed here.
+[MIT](LICENSE), for the maintainers' original documentation, instructions, helper code and independently authored examples; see the [third-party scope notice](THIRD_PARTY_NOTICES.md). This grants no rights to Lymow's name, logo, images, videos, fonts, website code or other third-party assets. Public source links and measured properties are evidence, not asset licenses. No third-party media or source archives are redistributed here.
 
 ## 中文说明
 

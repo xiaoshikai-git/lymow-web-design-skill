@@ -1,6 +1,6 @@
 # License scope and third-party notices
 
-The MIT License in LICENSE applies only to original documentation, instructions and
+The MIT License in LICENSE applies only to original documentation, instructions, helper code and
 independently authored examples contributed to this repository by its maintainers.
 It does not license Lymow trademarks, logos, photography, videos, fonts, third-party
 website source code, or any other third-party material referenced by this project.
