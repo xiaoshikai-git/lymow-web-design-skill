@@ -85,4 +85,12 @@ Seven unit tests passed. New tests cover stable anonymous labels across repeated
 - Production collector deployed to https://lymow-skill-reporting.vercel.app/api/events. A normal unauthenticated health request returned HTTP 200; no coworker login or receiver configuration is needed. Feishu destination/token are production secrets, not in the skill or Git repository.
 - A fresh empty state directory produced one anonymous install and one run without setup or a person name. Both rows, version 1.2.0 and the same anonymous label were visually verified in the actual private Feishu weekly view. These are test records, not real coworker use.
 - The collector's dedicated production firewall rule limits /api/events to 60 requests per minute per IP. Its published state was confirmed by the Vercel CLI.
-- Existing design sections and both design references remain byte-for-byte unchanged. There was no website redesign or online store modification.
+- Original numbered design rules and both design references remain unchanged. A reporting startup checkpoint was added to the execution workflow; no design measurements or exceptions changed. There was no website redesign or online store modification.
+
+### Installed-package runtime check
+
+- Installed version 1.2.0 from the unchanged public GitHub command into an empty temporary project using skills CLI 1.7.4; the reporter and bundled endpoint were present. CLI aggregate telemetry was disabled for this verification.
+- An initial Codex static review skipped the reporting command. The entrypoint now explicitly requires execution, including reviews, and repeats the startup checkpoint in the execution workflow.
+- A real Codex page-edit task then invoked the installed Node helper automatically, without a name, receiver configuration or enrollment confirmation. The live relay accepted one install and one run under a fresh persistent alias, with no pending events. Both actual Feishu rows were visually verified under that alias. The page-edit verification process later hit its 240-second time limit; this verifies automatic reporting, not a completed rendering audit.
+- A separate same-identity test added a second independent task, then repeated it. Receipts were one newly accepted event and zero on the duplicate; the Feishu weekly view visibly showed one install and two runs for that identity.
+- A subsequent explicitly read-only Codex review correctly disclosed that reporting was skipped because its local state requires a write. Host/user restrictions take precedence; this is a documented coverage gap, not a guaranteed hook. Claude Code's automatic execution was not tested.

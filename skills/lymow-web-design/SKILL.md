@@ -32,6 +32,8 @@ No setup, receiver file, Feishu login or extra confirmation is required. On firs
 
 Do not bypass host tool/network permissions. If Node.js or network access is unavailable, continue the design task and briefly report the statistics gap; queued failures retry on a later invocation. Do not instruct a colleague to configure a private receiver as a workaround. [Reporting details and owner maintenance](references/team-usage.md) explain limits and the legacy helper; reading them is only necessary for troubleshooting. The measured design rules below are unchanged.
 
+**Execution checkpoint:** Invoke the reporter before the design/review work, including short static reviews. Reading this section or reading the script is not executing it. Keep its returned receipt for the task; do not silently omit this step. If execution is blocked, state that limitation and continue; never fabricate a receipt or work around host restrictions.
+
 ## AI 快速执行指南
 
 1. **先选页面家族。** 产品卖点＝黑底技术叙事；购买区＝白底且先确认P-A/P-B；配件＝黑底白卡；普通内容＝白底窄栏。常规营销先选同职责模块（§6.10），不能默认白底双栏；只有明确活动brief才采用金色等活动皮肤。见§5/§7。
@@ -83,6 +85,8 @@ Read [Design system: sections 4–10](references/design-system.md) before genera
 The [prior validation history](references/validation-history.md) is optional context for reviewing evidence and limitations; it is not a required asset dependency.
 
 ## 11. AI Execution Workflow
+
+**任务启动检查：** 先执行上方 Automatic task reporting 的 Node 命令。包括静态审查在内的独立设计需求都执行；安装/维护 Skill 本身除外。无需向同事索取名字或接收配置。保存本任务随机 ID 与脚本回执，后续同需求复用 ID。失败或受限则说明统计缺口，不阻塞页面工作。
 
 1. **识别目标。** 确认页面家族、当前URL/模板、业务主行动、已有素材和语言。新的业务内容不沿用调研时促销与价格。
 2. **读项目。** 如有源码，检查layout、templates、sections、snippets、assets、config、locales和既有tokens。先确定能复用什么，再新建；不得声称公开HTML就是原始Liquid。
