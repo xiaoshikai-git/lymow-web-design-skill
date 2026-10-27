@@ -4,7 +4,7 @@ description: Create, implement, review, or refine Lymow websites, landing pages,
 license: MIT
 compatibility: Works with agents that read Agent Skills Markdown, including Codex, Claude Code, and Cursor. Browser access is needed for live visual comparison; Shopify conversion additionally requires appropriate Shopify tooling and project access. No executable runtime is required to load the skill.
 metadata:
-  version: "1.2.0"
+  version: "1.2.1"
   baseline-date: "2026-10-27"
 ---
 
@@ -43,6 +43,8 @@ Do not bypass host tool/network permissions. If Node.js or network access is una
 5. **守住边界。** 真实型号、能力与素材；不编造价格/折扣/评价，不重造品牌字体与颜色，不引入无依据的装饰。冲突按§2核实；[I]为建议，不能覆盖[C/R]实证。
 6. **完成必须看图。** 在1440/390截图，补查768；与同职责官网模块对照字体/换行、留白、媒体裁切、CTA和信息密度。确认字体已加载、无整页横溢出、手机不只是缩小；再查hover/focus、交互与sticky遮挡。Shopify转换另须完成§11的MCP校验和本地启动。
 
+**有参考图时：** 先按 §2.1 区分布局参考与已确认设计稿，不能默认继承图片的视觉风格。
+
 以上为导航，不替代相应组件规则；正式实现前阅读所选页面家族与§6相关配方。
 
 ## 1. Purpose & Scope
@@ -67,6 +69,14 @@ Do not bypass host tool/network permissions. If Node.js or network access is una
 8. 不复制线上遗留缺陷：空标题、导入文档类名、隐藏内容占位、极端 z-index、无必要的负 margin、重复 ID 或过小点击区域。修复方式应保持视觉语言。
 9. 仅获网页设计授权不代表可以发布、改店铺配置、提交订单或替换线上主题。
 
+### 2.1 用户参考图、原型与已确认设计稿
+
+- **默认参考结构。** 用户随需求附上的截图、竞品图或灵感图，默认只参考模块结构、内容顺序、图文关系与交互意图；字体、配色、按钮、圆角、阴影、具体留白和响应式仍按所选 Lymow 页面家族与组件执行。图片本身不自动成为“当前确认的品牌 / 项目规范”。
+- **保留意图，重新适配。** 提取结构后映射到现有 Lymow 组件，不照搬参考图的视觉皮肤、固定像素尺寸或桌面缩小版。移动顺序保留业务重点，密度与媒体裁切按对应组件适配。截图中的产品、文案、价格和功能不自动视为本次已确认素材或事实。
+- **明确用途后直接推进。** 开始时用一句话说明“参考图用于布局，视觉按 Lymow 规范实现”，不要求用户重复确认。多张图分别注明用途；如果同时要求完整视觉复刻和严格遵循 Lymow、且两者明显冲突，只澄清影响实现的具体冲突，其余工作继续。
+- **明确设计指令优先。** 用户明确指定为本项目已确认的 Lymow 设计稿，或明确要求某项视觉例外时，按 §2 的优先级执行；指出与基线的差异并限定到指定页面 / 组件。仅出现 Lymow Logo、文件名或“参考这张图”不足以推断整张图已获视觉批准。不把本次例外升级成全站规则，也不自行折中混搭。
+- **分开验收结构与视觉。** 检查参考图的结构 / 内容意图是否实现，再用 Lymow 同职责模块检查字体、颜色、留白、CTA、媒体和移动端；已明确批准的例外单独列出。不能因接近竞品截图就判定符合 Lymow。
+
 ## 3. Lymow Design DNA
 
 - **用黑色作为产品故事的舞台。** 大段纯黑承接金属灰标题、白色指标与草坪视频；图像本身提供绿色和质感。不要给每一段都套一张浅灰卡。[V: H/P]
@@ -88,7 +98,7 @@ The [prior validation history](references/validation-history.md) is optional con
 
 **任务启动检查：** 先执行上方 Automatic task reporting 的 Node 命令。包括静态审查在内的独立设计需求都执行；安装/维护 Skill 本身除外。无需向同事索取名字或接收配置。保存本任务随机 ID 与脚本回执，后续同需求复用 ID。失败或受限则说明统计缺口，不阻塞页面工作。
 
-1. **识别目标。** 确认页面家族、当前URL/模板、业务主行动、已有素材和语言。新的业务内容不沿用调研时促销与价格。
+1. **识别目标。** 确认页面家族、当前URL/模板、业务主行动、已有素材和语言；有参考图时按 §2.1 说明用途及明确批准的例外。新的业务内容不沿用调研时促销与价格。
 2. **读项目。** 如有源码，检查layout、templates、sections、snippets、assets、config、locales和既有tokens。先确定能复用什么，再新建；不得声称公开HTML就是原始Liquid。
 3. **选择参考。** 在本文件Reference中选同家族、同职责的具体模块，记录URL、模块定位、视口以及要继承的背景、字体角色、媒体构图、CTA和移动顺序。只有页面URL或零散tokens不足以证明视觉一致性；新布局部分标[I]。检查当前是否仍有效。网站变化时记录新证据，不静默覆盖基线。确认最终URL，尤其P-A/P-B。
 4. **建立页面映射。** 简短列出每段的组件、容器、字体角色、背景、媒体、CTA和移动行为。只有缺少信息确实阻碍正确实现时才询问；一般布局选择依本文件自行推进。
@@ -110,6 +120,7 @@ The [prior validation history](references/validation-history.md) is optional con
 ## 12. Quality Checklist
 
 - [ ] 已确认页面家族和最终产品URL；没有混淆模板差异与响应式。
+- [ ] 参考图已区分结构用途与视觉批准范围；结构意图和 Lymow 视觉分别验收，没有带入未批准的竞品样式。
 - [ ] Open Sans真实加载，正确字重；标题字号/行高/字距匹配目标组件。
 - [ ] 字号没有被语义H标签误导；标题换行、正文宽度与英文参考具有相近节奏。
 - [ ] 1200/1400容器、移动12/20边距与目标组件一致；没有双重padding。

@@ -91,6 +91,7 @@ For a quick text-only typography demo, explicitly request a test-only section wi
 - Green commercial CTAs and appropriate white scene-Hero CTAs, with measured capsule geometry.
 - Real product evidence, responsive image composition and explicit media-resolution checks.
 - Evidence labels distinguish CSS declarations, browser measurements, visual observations and design inference.
+- Attached reference images guide structure by default; Lymow rules govern styling. Explicitly approved project designs or requested visual exceptions take precedence within their stated scope.
 
 Read the full applicable recipes: these points are a guide, not replacement tokens.
 

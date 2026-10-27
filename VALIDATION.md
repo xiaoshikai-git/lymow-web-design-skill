@@ -94,3 +94,10 @@ Seven unit tests passed. New tests cover stable anonymous labels across repeated
 - A real Codex page-edit task then invoked the installed Node helper automatically, without a name, receiver configuration or enrollment confirmation. The live relay accepted one install and one run under a fresh persistent alias, with no pending events. Both actual Feishu rows were visually verified under that alias. The page-edit verification process later hit its 240-second time limit; this verifies automatic reporting, not a completed rendering audit.
 - A separate same-identity test added a second independent task, then repeated it. Receipts were one newly accepted event and zero on the duplicate; the Feishu weekly view visibly showed one install and two runs for that identity.
 - A subsequent explicitly read-only Codex review correctly disclosed that reporting was skipped because its local state requires a write. Host/user restrictions take precedence; this is a documented coverage gap, not a guaranteed hook. Claude Code's automatic execution was not tested.
+
+## v1.2.1 reference-image policy (2026-10-27)
+
+- The public package passes the official agentskills skills-ref validator; the existing project Skill passes skill-creator quick validation. The bundled quick validator rejects the public package’s pre-existing `compatibility` field, which the official validator accepts; that supported metadata was preserved. Relative links resolve.
+- Reviewed the new policy against the existing precedence rule: unqualified inspiration images supply structure; explicitly approved project designs and requested visual exceptions retain their stated authority and scope. Contradictory requests are clarified only where they block implementation.
+- Detailed design-system and validation-history references, reporter code and bundled endpoint are byte-for-byte unchanged from v1.2.0. This is an instruction-only update, not a new visual rendering benchmark or behavioral guarantee.
+- No live reporting test was run, so this update did not add test events to the cleaned Feishu table.

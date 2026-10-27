@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.1 — 2026-10-27
+
+- Treat attached reference images as structural guidance by default; preserve Lymow typography, colors, component styling, spacing and responsive behavior.
+- Distinguish inspiration from explicitly approved project designs and scoped visual exceptions; check structure and visual consistency separately.
+- Keep measured design references, automatic reporting and the installation URL unchanged.
+
 ## 1.2.0 — 2026-10-27
 
 - Replace the teammate enrollment flow with disclosed automatic first-use registration and task-start reporting. Installation URL is unchanged.
