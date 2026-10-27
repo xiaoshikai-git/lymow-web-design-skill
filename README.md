@@ -16,7 +16,11 @@ The validated design baseline is dated **2026-10-27**. Detailed rules are in Chi
 - Review screenshots at 1440px and 390px, with a 768px adaptation check.
 - Guide reuse of existing Shopify components when source code is available. It is not a Shopify theme or a working checkout.
 
-The entrypoint is [`skills/lymow-web-design/SKILL.md`](skills/lymow-web-design/SKILL.md); it explicitly requires the bundled [complete design reference](skills/lymow-web-design/references/design-system.md) before implementation. Prior validation evidence is preserved in a separate reference. No image library or website source archive is bundled. Optional, disclosed team reporting uses a standard-library Python script and remains disabled until enrollment.
+The entrypoint is [`skills/lymow-web-design/SKILL.md`](skills/lymow-web-design/SKILL.md); it explicitly requires the bundled [complete design reference](skills/lymow-web-design/references/design-system.md) before implementation. Prior validation evidence is preserved in a separate reference. No image library or website source archive is bundled. Disclosed automatic task reporting uses a dependency-free Node.js helper and a server-side Feishu relay. No teammate receiver configuration or enrollment prompt is required.
+
+## Automatic reporting notice
+
+Starting a Lymow task with this distribution automatically reports a persistent random local alias (or your name only if explicitly supplied), installation registration/task start, time/week, skill version and agent to the maintainer's private Feishu table via [the public collector](https://lymow-skill-reporting.vercel.app). No chat, page copy, project paths or assets are sent. There is no setup prompt. To opt out, set `LYMOW_USAGE_DISABLED=1` for the agent or run the bundled `node scripts/report_usage.mjs disable` before using it. Existing opt-outs are respected. See [fields, limits and controls](skills/lymow-web-design/references/team-usage.md).
 
 ## Installation
 
@@ -122,13 +126,13 @@ Report reproducible issues with a public page/module reference, viewport, observ
 | Views / unique visitors | [Insights → Traffic](https://github.com/xiaoshikai-git/lymow-web-design-skill/graphs/traffic) | GitHub repository traffic, visible to users with push access |
 | Clones / unique cloners | Same Traffic page | Git clones, including automation; not skill executions |
 | CLI installations | Official skills.sh badge and [source page](https://skills.sh/xiaoshikai-git/lymow-web-design-skill) | Aggregate recorded CLI installations; not unique people |
-| Team-reported task starts | Your private Feishu table, after opt-in enrollment | Approximate install registrations and independent task starts by supplied name; not guaranteed execution auditing |
+| Reported task starts | Maintainer’s private Feishu table | Approximate first-use installation registrations and task starts by persistent anonymous label or explicitly supplied name; not verified users |
 
 GitHub Traffic shows a rolling **14-day** window for visitors and full clones; it is not a lifetime installation counter. See [GitHub's traffic documentation](https://docs.github.com/en/repositories/viewing-activity-and-data-for-your-repository/viewing-traffic-to-a-repository).
 
 [skills.sh automatically indexes skills through CLI installation telemetry](https://skills.sh/docs/faq); no separate submission is required. Indexing can lag installation. A successful CLI install does not by itself prove a listing exists. See [VALIDATION.md](VALIDATION.md) for the last observed status, not a claimed rank or fabricated count. The [skill detail page](https://skills.sh/xiaoshikai-git/lymow-web-design-skill/lymow-web-design) has been verified. The badge displayed 4 during a later check on 2026-10-27; this is a dated observation, not a live count or a claim of four unique users.
 
-The [official badge](https://skills.sh/docs) reports the source repository's installation count; this repository contains one skill. Installs with telemetry disabled will not contribute. Maintainer test installs may be included, and repeated installs are not unique users. Default installations do not report named usage. Optional team reporting is described below; it is not an agent hook or background monitor. README badges use their stated public services. The upstream CLI has its own telemetry/security-check behavior; to opt out:
+The [official badge](https://skills.sh/docs) reports the source repository's installation count; this repository contains one skill. Installs with telemetry disabled will not contribute. Maintainer test installs may be included, and repeated installs are not unique users. Downloading alone does not report to Feishu; first actual use automatically registers the installation and task. Automatic task reporting is described below; it is not an agent hook or background monitor. README badges use their stated public services. The upstream CLI has its own telemetry/security-check behavior; to opt out:
 
 ```sh
 DISABLE_TELEMETRY=1 npx skills add xiaoshikai-git/lymow-web-design-skill
@@ -136,15 +140,13 @@ DISABLE_TELEMETRY=1 npx skills add xiaoshikai-git/lymow-web-design-skill
 
 This also disables the upstream security-audit requests, as documented by the [CLI maintainers](https://github.com/vercel-labs/skills/blob/main/docs/troubleshooting.md#telemetry).
 
-## Optional team reporting (v1.1)
+## Automatic task reporting (v1.2)
 
-For teams that want to see who tried the skill and weekly task frequency, an opt-in Python helper can send minimal events to a private Feishu Base automation. No server is required. Teammates enroll once with an optional explicitly supplied name (otherwise a persistent random anonymous label), disclosure/consent and the team receiver; subsequent task records are requested by the skill automatically. Design rules are unchanged.
+Install from the same repository and use the skill normally. The agent runs the bundled Node.js helper at the start of each independent design/review requirement. First use registers the installation and creates a persistent anonymous alias if no name was explicitly supplied. Teammates do not receive credentials or a startup package, and there is no separate configuration/confirmation step. The endpoint is bundled; Feishu credentials stay server-side.
 
-Existing teams can update in place and enroll once with a privately supplied receiver configuration; no new startup ZIP is required. Anonymous labels distinguish local configurations across tasks, not verified people or identities across devices.
+The helper preserves local identity across normal updates, respects `disable` and `LYMOW_USAGE_DISABLED=1`, and queues failures for later calls. The same task ID is locally deduplicated; different requirements count separately. A public skill cannot verify team membership, and all reports depend on agent execution and host permissions. Anonymous labels identify configurations, not necessarily people. Runs indicate starts, not completed pages. The first-use installation registration is not a download-time hook.
 
-See [setup, fields, counts and limitations](skills/lymow-web-design/references/team-usage.md). The receiver must be configured and verified separately. Plain CLI installation or copying a ZIP does not run custom setup; the first enrollment registers an already installed copy once. Task reports depend on agent tool execution and may be missed. Neither registration nor a task-start event proves a completed page.
-
-Do not put team Webhook URLs, tokens, identities or event logs in this public repository. The upstream CLI telemetry opt-out above is separate from team reporting; use the bundled helper's `disable` command to stop team reports.
+See [fields, controls, migration and limits](skills/lymow-web-design/references/team-usage.md). Design rules are unchanged. No receiver credentials, personal states or event logs belong in this repository. Upstream CLI telemetry controls are separate from this feature.
 
 ## License
 
@@ -152,4 +154,4 @@ Do not put team Webhook URLs, tokens, identities or event logs in this public re
 
 ## 中文说明
 
-这是非官方的 Lymow 网页设计 Skill，完整保留已验证的设计规则和证据标记。安装后可通过 `$lymow-web-design`（Codex）或 `/lymow-web-design`（Claude Code）调用。项目不包含品牌素材授权、不保证逐像素还原，也不把安装次数当成真实用户数或 AI 执行次数。
+这是非官方的 Lymow 网页设计 Skill，完整保留已验证的设计规则和证据标记。安装后可通过 `$lymow-web-design`（Codex）或 `/lymow-web-design`（Claude Code）调用。项目不包含品牌素材授权、不保证逐像素还原。1.2 起首次使用自动登记安装并记录需求开始，未提供姓名时保存固定匿名编号；无需额外配置或确认。可通过上述 disable 命令停用。安装、任务开始、真实人数和完成量是不同指标。

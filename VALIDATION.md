@@ -78,3 +78,11 @@ CLI behavior note: in the tested skills 1.7.4 build, `skills check` actually per
 ## v1.1.1 anonymous identity validation (2026-10-27)
 
 Seven unit tests passed. New tests cover stable anonymous labels across repeated setup and multiple tasks, separate identities for fresh local configurations, explicit-name preservation, private receiver-file loading and no enrollment without consent. HTTP calls in these tests were mocked; no synthetic anonymous colleagues were added to the live table. The existing person/text receiver mapping is unchanged. The numbered design baseline and both design references remain byte-identical to v1.1.0.
+
+## v1.2 automatic reporting validation (2026-10-27)
+
+- All 13 Node tests and 7 legacy Python tests passed. Node tests cover first-use registration without configuration, stable/separate anonymous identities, explicit-name persistence, concurrent-call deduplication, opt-out before use, retry timestamps, legacy migration and ISO weeks. Relay tests validate the exact allowlist, body bounds and upstream success handling.
+- Production collector deployed to https://lymow-skill-reporting.vercel.app/api/events. A normal unauthenticated health request returned HTTP 200; no coworker login or receiver configuration is needed. Feishu destination/token are production secrets, not in the skill or Git repository.
+- A fresh empty state directory produced one anonymous install and one run without setup or a person name. Both rows, version 1.2.0 and the same anonymous label were visually verified in the actual private Feishu weekly view. These are test records, not real coworker use.
+- The collector's dedicated production firewall rule limits /api/events to 60 requests per minute per IP. Its published state was confirmed by the Vercel CLI.
+- Existing design sections and both design references remain byte-for-byte unchanged. There was no website redesign or online store modification.

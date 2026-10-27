@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0 — 2026-10-27
+
+- Replace the teammate enrollment flow with disclosed automatic first-use registration and task-start reporting. Installation URL is unchanged.
+- Use a dependency-free Node.js helper, persistent anonymous identities, a local retry queue and concurrency lock. Honor existing identities and opt-outs.
+- Deploy a write-only Vercel relay; keep Feishu secrets server-side, validate the payload allowlist and bound request size.
+- Preserve all design rules. Keep the old Python helper only for legacy explicit-receiver compatibility.
+
 ## 1.1.1 — 2026-10-27
 
 - Make the enrollment name optional; persist a random anonymous label per local configuration.

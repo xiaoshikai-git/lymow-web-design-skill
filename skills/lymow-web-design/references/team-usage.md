@@ -1,78 +1,60 @@
-# Optional team usage reporting / 团队自动统计
+# Automatic team reporting / 自动统计（1.2.0）
 
-Off by default. Python 3.9+ (standard library only) is needed for this optional feature, not for design guidance. No server, agent hook, background job or paid backend is installed. The owner must inform teammates about the destination and fields and obtain consent before enrollment. Names are explicitly supplied, never inferred from OS accounts or chats. If omitted, the helper creates a persistent random alias such as `同事-7cf2a0d6b81e4392`. It is a local-installation identity, not verified personal identity.
+## Teammates: install and use
 
-## What counts
+Use the same public GitHub installation command. No startup ZIP, receiver file, Feishu credentials, name entry or extra enrollment confirmation is required. At the start of an independent Lymow design/review task, the agent runs `scripts/report_usage.mjs` using Node.js (already required by the skills CLI). The public collector endpoint is bundled in `reporting.json`; Feishu credentials are server-side secrets, never client files.
 
-- `install`: once when a person enrolls an already installed copy on this machine. Repeating setup does not count again. This is a registration of installation, not an invisible installer hook. Past installations cannot be recovered. A different machine/state folder can register again.
-- `run`: once when the AI starts a new independent Lymow design/review task. Retries and revisions of the same task reuse the task ID. Starting a run does not imply successful completion. Agent omission or lack of tools can cause undercounting.
-- Each event has `count=1`. View install and run separately; sum both only for a clearly labeled total activity count. These are not unique humans or productivity scores.
-- Weeks use ISO Monday–Sunday in Asia/Shanghai (UTC+08:00). The client timestamp is used, including for delayed events.
+Reporting is disclosed in README and SKILL.md. It sends a persistent random local alias (or an operator name explicitly supplied for reporting), event ID/type, timestamp/week, count, skill/version and agent. It does not read or send chat text, page copy, project paths, filenames, assets, email, OS usernames, hardware IDs or machine names. Hosting providers observe normal HTTP metadata. The collector has no event-reading API and forwards only an exact field allowlist to the maintainer's private Feishu table.
 
-## One-time enrollment
+## What counts and who is counted
 
-Install/update the complete skill first using the normal skills CLI. From a Codex project installation:
+- `install`: one installation registration at **first actual use**, not at download time. Standard skills CLI installation does not execute a custom install hook. Someone who only installs and never uses the skill will not produce a Feishu event.
+- `run`: one independent requirement starts. Different requirements get different random task IDs, even in one chat. Follow-up edits/retries on the same requirement reuse its ID. Runs are not completed pages or productivity scores.
+- No supplied name: the script creates a label such as `同事-7cf2a0d6b81e4392` once and persists it across tasks, new chats and normal skill updates. It is not a temporary per-task name.
+- Name explicitly supplied for reporting on first use: pass `--person`. Page copy containing a person's name is not operator identification. Established identities remain fixed; later name mentions do not silently reassign records.
+- A label identifies a local configuration, not a verified human. Changing device/account, clearing state or using a different `LYMOW_USAGE_HOME` creates a new identity. Sharing/copying a configuration merges people. Equal explicit names are grouped together; the owner should use unique team names or a separate agreed alias mapping.
+- The GitHub skill and collector are public. External installs can also report; anonymous labels cannot prove team membership. The collector is not an authenticated employee audit, and forged traffic cannot be ruled out.
+- Each event has `count=1`; keep install and run separate. Weeks use ISO Monday–Sunday, UTC+08:00, based on the original client timestamp.
 
-```sh
-python3 .agents/skills/lymow-web-design/scripts/team_usage.py setup --agent codex
-```
+## Local state, retries and stop control
 
-The prompt explains the fields and asks for consent, an optional name/unique team alias, the team's Feishu automation Webhook, and optional Bearer token. The URL/token inputs are hidden. Claude Code users resolve the script under their installed skill directory and use `--agent claude-code`.
-
-For an agent-assisted installation, the agent may use `--person` and `--consent` only after the user has been informed and authorized enrollment. Supply `LYMOW_FEISHU_WEBHOOK` and `LYMOW_FEISHU_TOKEN` through a private environment/configuration, never in a public README, Git commit, shared transcript or shell history. No app secret is needed. Credentials authorize writes to the receiving automation and must remain within the participating team.
-
-Configuration and a retry queue live outside projects in `~/.config/lymow-skill-usage/`. Do not include this directory in ZIP handoffs or give one person's configuration to another person. Shared machines require separate OS accounts or explicitly separate `LYMOW_USAGE_HOME` directories. Reusing one configuration across humans misattributes events.
-
-After enrollment, the SKILL.md instruction tells the AI to record automatically. Teammates do not fill a table for each task. Existing copies need updating once. Restart the agent session if it retains the old skill. Plain `npx skills add` or ZIP copying alone cannot execute custom setup automatically.
-
-## No-package onboarding and anonymous identities (v1.1.1)
-
-No new ZIP is needed. Update the existing installed skill from GitHub using the normal CLI (match the existing agent and project/global scope), then enroll once with the owner-provided **private receiver JSON**:
+State stays in `~/.config/lymow-skill-usage/`: `config.json` stores the persistent identity/disabled setting and `report-events.json` stores event IDs and delivery status. Never package this personal state for other teammates. `LYMOW_USAGE_HOME` is an explicit override for tests or separate profiles.
 
 ```sh
-python3 path/to/installed/skill/scripts/team_usage.py setup --receiver-file /private/path/receiver.json --agent codex
+node path/to/installed/skill/scripts/report_usage.mjs status
+node path/to/installed/skill/scripts/report_usage.mjs disable
+node path/to/installed/skill/scripts/report_usage.mjs enable
+node path/to/installed/skill/scripts/report_usage.mjs flush
 ```
 
-The JSON contains `webhook` and `token`; do not print it, put it in a public repository, or upload it to a public link. Owner configuration still needs to reach each participating device once; updating a public skill cannot secretly deliver private credentials. `--consent` is allowed for agent-assisted setup only after the disclosure has been accepted. Omit `--person` for anonymous registration, or supply the operator's explicitly provided name. No recurring name entry is needed.
+`disable` persists even before first use; `LYMOW_USAGE_DISABLED=1` also suppresses all reporting. `enable` is only used when the operator asks to resume. These controls require no receiver configuration. Existing v1.1 identities and disabled settings are respected; previously enrolled copies do not register installation again. The old Python helper remains solely for legacy private-receiver compatibility. Its existing SQLite backlog is not silently migrated; if needed, the owner can use that legacy helper's `flush` to deliver it. New task reports use Node and the public relay.
 
-Anonymous identity is generated once from a random registration ID, stored in the local configuration, and reused across tasks, sessions and ordinary skill updates. It does not use a hardware fingerprint, OS username, email, chat history or IP address. Two fresh configurations normally receive different labels. Identical task IDs on different installations do not collide because event IDs include the registration ID.
+The helper records before sending, serializes concurrent calls with a local lock, and sends at most three pending events per invocation. Each request times out after ten seconds. Failed events retain their original ID/timestamp for later retries. There is no background daemon. If the agent never invokes again, a pending queue is not automatically sent. Agent/tool/network permissions still apply; do not bypass them. Lack of Node, a missed invocation, a shared state lock timeout, disabled reporting, old versions or unavailable services can cause gaps.
 
-The same anonymous label can therefore show 3 runs this week and 5 next week. A different device, OS account, cleared configuration, or `LYMOW_USAGE_HOME` creates another identity; a shared/copied configuration merges people. A–Z global sequential aliases would require central assignment; this helper uses random labels to avoid that requirement. It cannot reveal the real person behind a label. Equal explicitly supplied names are grouped together, so names should be unique within the team.
+Local repeats with the same task ID are deduplicated. The Feishu receiver appends rows; an ambiguous timeout after a successful remote write can still duplicate an event. Use distinct event IDs when reconciling doubtful totals. No event does not prove no work happened.
 
-An established identity remains fixed; later name mentions do not silently reassign it or rewrite historical rows. To associate a known colleague with an anonymous label, the owner can keep a separate agreed label-to-name mapping. Changing `--person` on an already enrolled configuration is rejected to prevent accidentally attributing another person's queued records to the wrong person.
+## Fields and Feishu view
 
-## Owner: configure Feishu once
-
-Use a dedicated private Base table named `事件明细`. Keep all fields text except `count` (number):
+All columns are text except count (number):
 
 | Field | Meaning |
 |---|---|
-| event_id | Randomized event identifier, used for deduplication |
-| person | Explicit name, unique team alias, or persistent random anonymous label |
-| event | `install` or `run` |
-| occurred_at | ISO timestamp, UTC+08:00 |
-| week | ISO week, e.g. `2026-W44` |
+| event_id | Hash of random local registration ID, kind and random task ID |
+| person | Persistent anonymous label or explicitly supplied operator name |
+| event | install or run |
+| occurred_at | ISO timestamp with +08:00 |
+| week | ISO week, e.g. 2026-W44 |
 | count | Always 1 |
-| skill | `lymow-web-design` |
-| skill_version | Installed skill version |
-| agent | `codex`, `claude-code`, `cursor`, or `other` |
+| skill | lymow-web-design |
+| skill_version | Installed version |
+| agent | codex, claude-code, cursor or other |
 
-Minimal receiver: **接收到 Webhook 时 → 新增记录**. Map the eight text fields from incoming JSON to matching columns; set `count` to the constant 1. Enable Bearer-token verification and keep the receiver private. The local SQLite queue deduplicates repeat invocations with the same task ID. This simple append receiver does not deduplicate an ambiguous network retry (for example, a response lost after the row was written), so rare duplicate rows are possible. Use distinct `event_id` counts where available, or inspect repeated IDs. If later required, add a workflow lookup/conditional before creation; do not assume that optional improvement already exists or guarantees uniqueness under concurrency.
+The private table uses the grouped view `week → person → event`, with record counts. Exclude known verification identities when assessing colleague usage. No historic activity is fabricated or recovered. A successful relay response confirms Feishu accepted the trigger, not that downstream automation was successful; verify table rows or automation logs when troubleshooting.
 
-Create a weekly grouped view using `week → person → event`, with record counts (or sums of `count`). A dashboard can use `person` as the row, `event` as the series, and distinct `event_id` as the count, filtered by `week`. Keep test identities clearly marked `TEST-`; exclude them when reading operational totals. Never fabricate people or historical events to populate a chart.
+## Owner maintenance — no teammate action
 
-The receiver uses an HTTP POST JSON body, not a group-bot message. Automation quotas apply to the team's Feishu plan. A successful Webhook response only confirms receipt; verify the workflow log and the actual row before declaring the connection working. [Official Feishu webhook documentation](https://www.feishu.cn/hc/zh-CN/articles/612376356355-设置接收到-webhook-时为工作流和自动化触发条件).
+The `service/` directory is the Vercel collector source. Configure production secrets `FEISHU_WEBHOOK` and `FEISHU_TOKEN` in that service only; the target must be the authorized Feishu Base automation endpoint. The existing automation is **接收到 Webhook 时 → 新增记录**, with eight incoming text fields mapped and count fixed to 1. Keep Bearer verification enabled and the table private.
 
-## Maintenance and limits
+Collector validation allows only the nine fields above and limits actual request bodies to 2 KiB. Production rate limiting restricts the collector path to 60 requests per minute per IP; shared office IPs share the allowance. Excess/failed requests remain locally queued. This reduces bursts but does not authenticate coworkers or provide exactly-once delivery. Set server-side `REPORTING_PAUSED=1` and redeploy to pause forwarding if necessary. Hosting and Feishu automation quotas still apply; a plan upgrade is not part of this setup.
 
-```sh
-python3 path/to/installed/skill/scripts/team_usage.py status
-python3 path/to/installed/skill/scripts/team_usage.py disable
-python3 path/to/installed/skill/scripts/team_usage.py flush
-```
-
-`disable` stops all sending, including queued events. `flush` sends at most three pending events and only when enabled; otherwise there is no network call. Each request has a four-second timeout. Failed delivery is queued locally and retried on later invocation, without changing the original timestamp/ID. If the agent never runs again, the remaining queue is not delivered automatically. No daemon is installed.
-
-Only the allowlisted fields above are transmitted. No content, file paths, repository names, chat text, assets, machine names, email addresses or raw task IDs are included. The receiving service can observe normal network metadata; this client does not collect extra device data. Python/agent network permissions still apply and must not be bypassed.
-
-This is approximate, openly disclosed usage reporting, not a guaranteed execution audit. No event does not prove no usage. A run does not prove a completed page. Teammates can disable reporting, use old versions, or use agents without shell access. Public aggregate skills.sh installations remain a separate metric.
+The public endpoint has no embedded Feishu secret. Do not place receiver URLs, tokens, individual identities, event logs or deployment-local files in GitHub. The official skills.sh CLI aggregate install count remains a separate metric from these task events.
